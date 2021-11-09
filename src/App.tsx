@@ -1,11 +1,9 @@
-import React from 'react';
+import GlobalStyles from './styles/GlobalStyles'
+import { Layout } from './components/Layout'
 
-function App() {
-  return (
-    <div className="App">
-      ola mundo    
-    </div>
-  );
-}
-
-export default App;
+export const App:React.FC = () => (
+    <>
+        <GlobalStyles />
+        <Layout />
+    </>
+)

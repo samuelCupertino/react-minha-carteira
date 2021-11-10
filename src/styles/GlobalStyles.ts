@@ -14,10 +14,21 @@ export default createGlobalStyle`
         height: 100%;
     }
 
-    :root {
-        --color-primary: #0D0D0D;
-        --color-secondary: #fff;
-        --bg-primary: #1B1F38;
-        --bg-secondary: #252A48;
-    }    
+    :root {        
+        --primary: ${(props) => props.theme.color.primary};
+        --secondary: ${(props) => props.theme.color.secondary};
+        --tertiary: ${(props) => props.theme.color.tertiary};
+
+        --white: ${(props) => props.theme.color.white};
+        --black: ${(props) => props.theme.color.black};
+        --gray: ${(props) => props.theme.color.gray};
+
+        --success: ${(props) => props.theme.color.success};
+        --info: ${(props) => props.theme.color.info};
+        --warning: ${(props) => props.theme.color.warning};
+    }
+
+    button {
+        cursor: pointer;
+    }
 `;

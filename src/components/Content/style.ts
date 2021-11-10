@@ -2,5 +2,6 @@ import styled from 'styled-components'
 
 export const Container = styled.div`
     grid-area: CT;
-    background-color: var(--bg-primary);
+    background-color: var(--primary);
+    color: var(--white);
 `

@@ -1,6 +1,6 @@
 import { Container, ToggleLabel, ToggleSelector} from './style'
 
-export const Toggle:React.FC = () => (
+const Toggle:React.FC = () => (
     <Container>
         <ToggleLabel>Light</ToggleLabel>
         <ToggleSelector
@@ -13,3 +13,5 @@ export const Toggle:React.FC = () => (
     
     </Container>
 )
+
+export default Toggle

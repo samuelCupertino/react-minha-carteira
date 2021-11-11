@@ -1,7 +1,9 @@
 import { Container } from './style'
 
-export const Content:React.FC = () => (
+const Content:React.FC = ({children}) => (
     <Container>
-        <h1>Content</h1>
+        {children}
     </Container>
 )
+
+export default Content

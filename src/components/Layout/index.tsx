@@ -1,14 +1,18 @@
 import { Grid } from './style'
-import { MainHeader } from '../MainHeader'
-import { Aside } from '../Aside'
-import { Content } from '../Content'
+import MainHeader from '../MainHeader'
+import Aside from '../Aside'
+import Content from '../Content'
 
-export const Layout:React.FC = () => (
+const Layout:React.FC = ({children}) => (
     <>
         <Grid>
             <MainHeader />
             <Aside />
-            <Content />
+            <Content>
+                {children}
+            </Content>
         </Grid>
     </>
 )
+
+export default Layout

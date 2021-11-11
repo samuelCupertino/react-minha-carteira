@@ -6,6 +6,6 @@ export const Grid = styled.div`
     grid-template-areas: 
         'AS MH'
         'AS CT';
-    grid-template-columns: 200px auto;
-    grid-template-rows: 40px calc(100% - 40px);
+    grid-template-columns: 250px auto;
+    grid-template-rows: 70px calc(100% - 70px);
 `

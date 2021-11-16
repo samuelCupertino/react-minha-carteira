@@ -5,10 +5,7 @@ import Toggle from '../Toggle'
 import emojis from '../../utils/emojis'
 
 const MainHeader:React.FC = () => {
-    const emoji = useMemo(() => {
-        const index = Math.floor(Math.random() * (emojis.length - 1))
-        return emojis[index]
-    }, [emojis])
+    const emoji = emojis[Math.floor(Math.random() * (emojis.length - 1))]
 
     console.log(emoji)
 

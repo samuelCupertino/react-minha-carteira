@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 interface ITitleContainerProps{
-    lineColor: string
+    varColor: string
 }
 
 export const Container = styled.div`
@@ -21,7 +21,7 @@ export const TitleContainer = styled.div<ITitleContainerProps>`
             display: block;
             width: 55px;
             height: 10px;
-            background-color: ${props => props.lineColor};
+            background-color: var(${props => props.varColor});
         }
     }
 `

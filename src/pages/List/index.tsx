@@ -15,7 +15,7 @@ interface ICardFinanceData {
     amount: string
     frequency: string
     date: string
-    tagColor: string
+    tagVarColor: string
 }
 
 interface IDateOptionSelect {
@@ -27,8 +27,8 @@ const List:React.FC = () => {
     const { type: transactionType } = useParams()    
     
     const pageData = useMemo(() => transactionType === 'entry-balance' 
-        ? {title: 'Entradas', lineColor: '#F7931B', transactions: gains}
-        : {title: 'Saídas', lineColor: '#E44C4E', transactions: expenses}
+        ? {title: 'Entradas', varColor: '--success', transactions: gains}
+        : {title: 'Saídas', varColor: '--warning', transactions: expenses}
     , [transactionType])
 
 
@@ -99,7 +99,7 @@ const List:React.FC = () => {
                 date: formatDateBR(item.date),
                 amount: formatCurrencyBRL(+item.amount),
                 frequency: item.frequency,
-                tagColor: item.frequency === 'eventual' ? '#E44C4E' : '#4E41F0'
+                tagVarColor: item.frequency === 'eventual' ? '--warning' : '--success'
             }))
         setListCardFinanceData(newListCardFinanceData)
     }
@@ -117,7 +117,7 @@ const List:React.FC = () => {
 
     return (
         <Container>
-            <ContentHeader title={pageData.title} lineColor={pageData.lineColor}>
+            <ContentHeader title={pageData.title} varColor={pageData.varColor}>
                 <SelectInput 
                     options={monthOptions} 
                     valueSelected={monthOptionSelected} 

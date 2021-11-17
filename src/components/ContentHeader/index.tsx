@@ -2,15 +2,15 @@ import { Container, TitleContainer, Controllers } from './style'
 
 interface IContentHeaderProps {
     title: string
-    lineColor: string
+    varColor: string
     children: React.ReactNode
 }
 
 const ContentHeader:React.FC<IContentHeaderProps> = ({
-    title, lineColor, children
+    title, varColor, children
 }) => (
     <Container>
-        <TitleContainer lineColor={lineColor}>
+        <TitleContainer varColor={varColor}>
             <h1>{title}</h1>
         </TitleContainer>
 

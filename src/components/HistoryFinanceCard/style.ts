@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 interface IContainerProps {
-    tagColor: string
+    tagVarColor: string
 }
 
 export const Container = styled.li<IContainerProps>`
@@ -27,6 +27,6 @@ export const Container = styled.li<IContainerProps>`
         height: 60%;
         position: absolute;
         left: 0;
-        background-color: ${props => props.tagColor};
+        background-color: var(${props => props.tagVarColor});
     }
 `

@@ -6,11 +6,12 @@ interface ISelectInputProps {
         label: string | number
     }[],
     onChange?: React.ChangeEventHandler<HTMLSelectElement> | undefined
+    valueSelected?: string | number
 }
 
-const SelectInput:React.FC<ISelectInputProps> = ({options, onChange}) => (
+const SelectInput:React.FC<ISelectInputProps> = ({options, onChange, valueSelected}) => (
     <Container>
-        <select onChange={onChange}>
+        <select onChange={onChange} value={valueSelected}>
             {options.map(({value, label}, idx) => (<option key={idx} value={value}>{label}</option>))}
         </select>
     </Container>

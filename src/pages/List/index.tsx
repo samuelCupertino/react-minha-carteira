@@ -10,53 +10,53 @@ import { gains, expenses } from '../../repositories'
 import { formatDateBR, formatCurrencyBRL } from '../../utils/index'
 
 interface ICardFinanceData {
-    id: number
-    description: string
-    amountFormatted: string
+    key: number
+    title: string
+    amount: string
     frequency: string
-    dateFormatted: string
+    date: string
     tagColor: string
 }
 
 interface IDateOptionSelect {
     value: number
-    label: string
+    label: string | number
 }
 
 const List:React.FC = () => {
-    const { type } = useParams()    
-    const listData = useMemo(() => type === 'entry-balance' ? gains : expenses, [type])
+    const { type: transactionType } = useParams()    
+    
+    const pageData = useMemo(() => transactionType === 'entry-balance' 
+        ? {title: 'Entradas', lineColor: '#F7931B', transactions: gains}
+        : {title: 'Saídas', lineColor: '#E44C4E', transactions: expenses}
+    , [transactionType])
+
+
     const [ listCardFinanceData, setListCardFinanceData ] = useState<ICardFinanceData[]>([])
-
-    const headerInfo = useMemo(() => type === 'entry-balance' 
-        ? {title: 'Entradas', lineColor: '#F7931B'}
-        : {title: 'Saídas', lineColor: '#E44C4E'}
-    , [type])
-
+    const [ frequenciesSelected, setFrequenciesSelected ] = useState(['recurrent', 'eventual'])
 
     const [ monthOptions, setMonthOptions ] = useState<IDateOptionSelect[]>([])
     const [ yearOptions, setYearOptions ] = useState<IDateOptionSelect[]>([])
 
     const dateDefault = useMemo(() => new Date(
-        listData.reduce((acc, e) => acc < e.date ? e.date : acc, '')
-    ), [listData])
-              
+        pageData.transactions.reduce((acc, e) => acc < e.date ? e.date : acc, '')
+    ), [pageData.transactions])
+
     const [ monthOptionSelected, setMonthOptionSelected ] = useState<number>(dateDefault.getMonth() + 1)
     const [ yearOptionSelected, setYearOptionSelected ] = useState<number>(dateDefault.getFullYear())
 
-
+    
     const updateMonthAndYearOptions = () => {
-        const uniqueYears = listData.reduce((acc, item) => {
+        const uniqueYears = pageData.transactions.reduce((acc, item) => {
             const year = new Date(item.date).getFullYear()
             return acc.find(({value}) => value === year) ? acc : [...acc, {value:year, label:year}]
-        }, [] as any[])
-
+        }, [] as IDateOptionSelect[])
+        
         const uniqueYearsDesc = uniqueYears.sort((a, b) => b.value - a.value)
 
         setYearOptions(uniqueYearsDesc)
 
-
-        const monthsInYear:number[] = listData
+        const monthsInYear:number[] = pageData.transactions
             .filter(({date}) => date.includes(`${yearOptionSelected}-`))
             .reduce((acc, item) => {
                 const month = new Date(item.date).getMonth() + 1
@@ -79,54 +79,73 @@ const List:React.FC = () => {
         ]
 
         const optionMonths = allMonths.filter(({value}) => monthsInYear.includes(value))
+        const monthDefault = Math.max(...monthsInYear)
 
         setMonthOptions(optionMonths)
+        setMonthOptionSelected(monthDefault)
     }
     useEffect(updateMonthAndYearOptions, [yearOptionSelected])
 
-    
+
     const filterCardFinanceByDate = () => {
         const month = `${monthOptionSelected}`.padStart(2, '0')
 
-        const newListCardFinanceData = listData
-            .filter(item => item.date.includes(`${yearOptionSelected}-${month}`))
+        const newListCardFinanceData = pageData.transactions
+            .filter(({date}) => date.includes(`${yearOptionSelected}-${month}-`))
+            .filter(({frequency}) => frequenciesSelected.includes(frequency))
             .map((item, idx) => ({
-                id: idx + 1,
-                description: item.description,
-                amountFormatted: formatCurrencyBRL(+item.amount),
-                dateFormatted: formatDateBR(item.date),
+                key: idx + 1,
+                title: item.description,
+                date: formatDateBR(item.date),
+                amount: formatCurrencyBRL(+item.amount),
                 frequency: item.frequency,
                 tagColor: item.frequency === 'eventual' ? '#E44C4E' : '#4E41F0'
             }))
         setListCardFinanceData(newListCardFinanceData)
     }
-    useEffect(filterCardFinanceByDate, [monthOptionSelected, yearOptionSelected])
+    useEffect(filterCardFinanceByDate, [monthOptionSelected, yearOptionSelected, frequenciesSelected])
 
+    
+    const handleFrequency = (frequency:string) => {
+        const newFrequencies = frequenciesSelected.includes(frequency) 
+            ? frequenciesSelected.filter(freq => freq !== frequency)
+            : [...frequenciesSelected, frequency]
+        
+        if(newFrequencies.length > 0)
+            setFrequenciesSelected(newFrequencies)
+    }
 
     return (
         <Container>
-            <ContentHeader title={headerInfo.title} lineColor={headerInfo.lineColor}>
-                <SelectInput options={monthOptions} onChange={ev => setMonthOptionSelected(+ev.target.value)} />
-                <SelectInput options={yearOptions} onChange={ev => setYearOptionSelected(+ev.target.value)}  />
+            <ContentHeader title={pageData.title} lineColor={pageData.lineColor}>
+                <SelectInput 
+                    options={monthOptions} 
+                    valueSelected={monthOptionSelected} 
+                    onChange={ev => setMonthOptionSelected(+ev.target.value)} 
+                />
+                <SelectInput 
+                    options={yearOptions} 
+                    valueSelected={yearOptionSelected} 
+                    onChange={ev => setYearOptionSelected(+ev.target.value)} 
+                />
             </ContentHeader>
 
             <Filters>
-                <button type="button" className="tag-recurrent">Recorrentes</button>
-                <button type="button" className="tag-eventual">Eventuais</button>
+                <button 
+                    type="button" 
+                    className={`tag-recurrent ${frequenciesSelected.includes('recurrent') && 'active'}`} 
+                    onClick={() => handleFrequency('recurrent')}
+                > Recorrentes </button>
+
+                <button 
+                    type="button" 
+                    className={`tag-eventual ${frequenciesSelected.includes('eventual') && 'active'}`} 
+                    onClick={() => handleFrequency('eventual')}
+                > Eventuais </button>
             </Filters>
 
             <Content>
-                <ul>
-                    {listCardFinanceData.map(item => (
-                        <HistoryFinanceCard 
-                            key={item.id}
-                            tagColor={item.tagColor}
-                            title={item.description}
-                            subtitle={item.dateFormatted}
-                            amount={item.amountFormatted}
-                        />
-                    ))}
-                </ul>
+                {listCardFinanceData.map(props => ( <HistoryFinanceCard {...props}/> ))}
             </Content>
         </Container>
     )

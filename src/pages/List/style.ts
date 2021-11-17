@@ -9,8 +9,10 @@ export const Container = styled.div`
     gap: 20px;
 `
 
-export const Content = styled.div`
-
+export const Content = styled.ul`
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 `
 
 export const Filters = styled.div`
@@ -24,6 +26,7 @@ export const Filters = styled.div`
         font-weight: 500;
         background-color: transparent;
         color: var(--white);
+        opacity: .4;
         transition: opacity .3s;
 
         &:hover {
@@ -38,13 +41,19 @@ export const Filters = styled.div`
             margin: 0 auto;
         }
 
+        &.active {
+            opacity: 1;
+        }
+
         &.tag-recurrent::after {
-            background-color: var(--warning);
+            background-color: var(--success);
         }
 
         &.tag-eventual::after {
-            background-color: var(--success);
+            background-color: var(--warning);
         }
+
+
     }
 
 `

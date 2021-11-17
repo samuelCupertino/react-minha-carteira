@@ -3,17 +3,17 @@ import { Container } from './style'
 interface IHistoryFinanceCard {
     tagColor: string,
     title: string,
-    subtitle: string,
+    date: string,
     amount: string
 }
 
 const HistoryFinanceCard:React.FC<IHistoryFinanceCard> = ({
-    tagColor, title, subtitle, amount
+    tagColor, title, date, amount
 }) => (
     <Container tagColor={tagColor}>
         <div> 
             <h4>{title}</h4>
-            <h6>{subtitle}</h6>
+            <h6>{date}</h6>
         </div>
         <span>{amount}</span>
     </Container>

@@ -11,7 +11,6 @@ export const Container = styled.li<IContainerProps>`
     align-items: center;
     list-style: none;
     border-radius: 5px;
-    margin: 10px 0;
     padding: 12px 25px;
     background-color: var(--tertiary);
     cursor: pointer;

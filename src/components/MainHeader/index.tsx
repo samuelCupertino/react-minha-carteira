@@ -4,11 +4,11 @@ import { Container, Profile, Welcome, UserName } from './style'
 import Toggle from '../Toggle'
 import emojis from '../../utils/emojis'
 
+import { useTheme } from 'styled-components'
+
 const MainHeader:React.FC = () => {
-    const emoji = emojis[Math.floor(Math.random() * (emojis.length - 1))]
-
-    console.log(emoji)
-
+    const emoji = useMemo(()=> emojis[Math.floor(Math.random() * (emojis.length - 1))], [])
+    const 
     return (
         <Container>
             <Toggle />

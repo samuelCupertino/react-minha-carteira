@@ -84,7 +84,7 @@ const List:React.FC = () => {
         setMonthOptions(optionMonths)
         setMonthOptionSelected(monthDefault)
     }
-    useEffect(updateMonthAndYearOptions, [yearOptionSelected])
+    useEffect(updateMonthAndYearOptions, [pageData.transactions, yearOptionSelected])
 
 
     const filterCardFinanceByDate = () => {
@@ -103,7 +103,7 @@ const List:React.FC = () => {
             }))
         setListCardFinanceData(newListCardFinanceData)
     }
-    useEffect(filterCardFinanceByDate, [monthOptionSelected, yearOptionSelected, frequenciesSelected])
+    useEffect(filterCardFinanceByDate, [pageData.transactions, monthOptionSelected, yearOptionSelected, frequenciesSelected])
 
     
     const handleFrequency = (frequency:string) => {

@@ -9,21 +9,19 @@ interface IWalletBoxProps {
 
 const MessageBox: React.FC<IWalletBoxProps> = ({
     title, description, footerText, icon
-}) => {
-    return (
-        <Container>
-            <header>
-                <h4>{title}</h4>
+}) => (
+    <Container>
+        <header>
+            <h4>{title}</h4>
             {icon && <img src={icon} alt={`Icone ${icon} ilustrando ${title}`} />}
-            </header>
-            
-            <p>{description}</p>
+        </header>
+        
+        <p>{description}</p>
 
-            <footer>
-                <span>{footerText}</span>
-            </footer>
-        </Container>
-    )
-}
+        <footer>
+            <span>{footerText}</span>
+        </footer>
+    </Container>
+)
 
 export default MessageBox

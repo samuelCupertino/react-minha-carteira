@@ -1,18 +1,19 @@
-import { useState, useMemo, useEffect } from 'react'
+import { useState, useMemo, useEffect, useCallback } from 'react'
 
-
-import { Container, Content } from './style'
 import ContentHeader from '../../components/ContentHeader'
 import SelectInput from '../../components/SelectInput'
 import WalletBox from '../../components/walletBox'
 import MessageBox from '../../components/MessageBox'
-
+import PieChartBox from '../../components/PieChartBox'
+import LineChartBox from '../../components/LineChartBox'
+import BarChartBox from '../../components/BarChartBox'
 
 import { gains, expenses } from '../../repositories'
 import happyImg from '../../assets/happy.svg'
 import sadImg from '../../assets/sad.svg'
 import grinningImg from '../../assets/grinning.svg'
 
+import { Container, Content } from './style'
 interface IDateOptionSelect {
     value: number
     label: string | number
@@ -31,7 +32,8 @@ const Dashboard:React.FC = () => {
     const [ monthOptionSelected, setMonthOptionSelected ] = useState<number>(dateDefault.getMonth() + 1)
     const [ yearOptionSelected, setYearOptionSelected ] = useState<number>(dateDefault.getFullYear())
 
-    const updateMonthAndYearOptions = () => {
+
+    useEffect(() => {
         const uniqueYears = transactions.reduce((acc, item) => {
             const year = new Date(item.date).getFullYear()
             return acc.find(({value}) => value === year) ? acc : [...acc, {value:year, label:year}]
@@ -68,19 +70,77 @@ const Dashboard:React.FC = () => {
 
         setMonthOptions(optionMonths)
         setMonthOptionSelected(monthDefault)
-    }
-    useEffect(updateMonthAndYearOptions, [yearOptionSelected])
+    }, [transactions, yearOptionSelected])
 
 
-    const calcTotalAmountByDate = (collection:any[]) => {
-        const monthZerroFill = `${monthOptionSelected}`.padStart(2, '0')
-        const collectionInMonth = collection.filter(({date}) => date.includes(`${yearOptionSelected}-${monthZerroFill}-`))
-        const totalCollection = collectionInMonth.reduce((acc, item) => acc + (+item.amount), 0)
-        return totalCollection
-    }
-    const totalGains = useMemo(() => calcTotalAmountByDate(gains), [monthOptionSelected, yearOptionSelected])
-    const totalExpenses = useMemo(() => calcTotalAmountByDate(expenses), [monthOptionSelected, yearOptionSelected])
+    const calcTotalAmountByDate = useCallback((collection:Record<string, any>[], year:number, month:number) => {
+        const monthZeroFill = `${month}`.padStart(2, '0')
+        const collectionInMonth = collection.filter(({date}) => date.includes(`${year}-${monthZeroFill}-`))
+        return collectionInMonth.reduce((acc, item) => acc + (+item.amount), 0)
+    }, [])
+    const totalGains = useMemo(() => calcTotalAmountByDate(gains, yearOptionSelected, monthOptionSelected), [calcTotalAmountByDate, yearOptionSelected, monthOptionSelected])
+    const totalExpenses = useMemo(() => calcTotalAmountByDate(expenses, yearOptionSelected, monthOptionSelected), [calcTotalAmountByDate, yearOptionSelected, monthOptionSelected])
     const totalBalance = useMemo(() => totalGains - totalExpenses, [totalGains, totalExpenses])
+
+    const percentFromGainsAndExpenses = useMemo(() => {
+        const total = totalGains + totalExpenses
+        const percentGains = totalGains / total * 100
+        const percentExpenses = totalExpenses / total * 100
+
+        return [
+            { 
+                name: 'Entradas',
+                value: totalGains,
+                percent: +percentGains.toFixed(2) || 0,
+                varColor: '--info'
+            },
+            { 
+                name: 'Saídas',
+                value: totalExpenses,
+                percent: +percentExpenses.toFixed(2) || 0,
+                varColor: '--warning'
+            }
+        ]
+    }, [totalGains, totalExpenses])
+
+    const historyData = useMemo(() => {
+        const months = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']
+        
+        return months.reduce((acc, month, i) => {
+            const monthNum = i + 1
+            const amountEntry = calcTotalAmountByDate(gains, yearOptionSelected, monthNum)
+            const amountOutput = calcTotalAmountByDate(expenses, yearOptionSelected, monthNum)
+
+            return amountEntry || amountOutput ? [...acc, { month, amountEntry, amountOutput }] : acc
+        }, [] as any[])
+
+    }, [calcTotalAmountByDate, yearOptionSelected])
+
+    const calcRecurrentAndEventualByDate = useCallback((collection:Record<string, any>[], year:number, month:number) => {
+        const collectionRecurrent = collection.filter(({frequency}) => frequency === 'recurrent')
+        const collectionEventual = collection.filter(({frequency}) =>  frequency === 'eventual')
+
+        const amountRecurrent = calcTotalAmountByDate(collectionRecurrent, year, month)
+        const amountEventual = calcTotalAmountByDate(collectionEventual, year, month)
+        const total = amountRecurrent + amountEventual
+
+        return [
+            {
+                name: 'Recorrentes',
+                amount: amountRecurrent,
+                percent: +(amountRecurrent / total * 100).toFixed(2) || 0,
+                varColor: '--info'
+            },
+            {
+                name: 'Eventuais',
+                amount: amountEventual,
+                percent: +(amountEventual / total * 100).toFixed(2) || 0,
+                varColor: '--warning'
+            }
+        ]
+    }, [calcTotalAmountByDate])
+    const gainsRecurrentAndEventual = useMemo(() => calcRecurrentAndEventualByDate(gains, yearOptionSelected, monthOptionSelected), [calcRecurrentAndEventualByDate, yearOptionSelected, monthOptionSelected])
+    const expensesRecurrentAndEventual = useMemo(() => calcRecurrentAndEventualByDate(expenses, yearOptionSelected, monthOptionSelected), [calcRecurrentAndEventualByDate, yearOptionSelected, monthOptionSelected])
 
 
     const messageBox = useMemo(() => {
@@ -104,10 +164,11 @@ const Dashboard:React.FC = () => {
                 icon: happyImg
             }
         }
-        const status = totalBalance < 0 ? 'negative' : totalBalance == 0 ? 'warning' : 'positive'
+        const status = totalBalance < 0 ? 'negative' : totalBalance === 0 ? 'warning' : 'positive'
         
         return messages[status]
     }, [totalBalance])
+
 
 
     return (
@@ -154,7 +215,16 @@ const Dashboard:React.FC = () => {
                     footerText={messageBox.footerText}
                     icon={messageBox.icon}
                 />
+
+                <PieChartBox legends={percentFromGainsAndExpenses}/> 
+
+                <LineChartBox data={historyData} varColorEntry="--info" varColorOutput="--warning"/>
+
+
+                <BarChartBox title="Entradas" data={gainsRecurrentAndEventual} />
+                <BarChartBox title="Saídas" data={expensesRecurrentAndEventual} />
             </Content>
+
         </Container>
     )
 }

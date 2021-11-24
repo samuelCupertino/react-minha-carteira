@@ -14,7 +14,7 @@ import {
 } from './styles'
 
 interface IPieChartProps {
-    legends: {
+    data: {
         name: string
         value: number
         percent: number
@@ -24,12 +24,12 @@ interface IPieChartProps {
 
 const getVarCssValue = (varCss:string) => getComputedStyle(document.body).getPropertyValue(varCss)
 
-const PieChartBox: React.FC<IPieChartProps> = ({ legends }) => (
+const PieChartBox: React.FC<IPieChartProps> = ({ data }) => (
     <Container>
         <SideLeft>
             <h2>Relação</h2>
             <LegendContainer>
-                {legends.map(({ varColor, percent, name }, idx) => (
+                {data.map(({ varColor, percent, name }, idx) => (
                     <Legend key={idx} varColor={varColor}>
                         <div>{percent}%</div>
                         <span>{name}</span>
@@ -41,8 +41,8 @@ const PieChartBox: React.FC<IPieChartProps> = ({ legends }) => (
         <SideRight>
             <ResponsiveContainer>
                 <PieChart>
-                    <Pie data={legends} dataKey="percent">
-                        {legends.map(({name, varColor}) => (
+                    <Pie data={data} dataKey="percent">
+                        {data.map(({name, varColor}) => (
                             <Cell key={name} fill={getVarCssValue(varColor)} />
                         ))}
                     </Pie>

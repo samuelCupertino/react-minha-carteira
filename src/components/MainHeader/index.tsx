@@ -1,17 +1,23 @@
 import { useMemo } from 'react'
-import { Container, Profile, Welcome, UserName } from './style'
+import { Container, Profile, Welcome, UserName } from './styles'
 
 import Toggle from '../Toggle'
 import emojis from '../../utils/emojis'
 
-import { useTheme } from 'styled-components'
+import { useTheme } from '../../hooks/theme'
 
 const MainHeader:React.FC = () => {
     const emoji = useMemo(()=> emojis[Math.floor(Math.random() * (emojis.length - 1))], [])
-    const 
+    const { theme, toggleTheme } = useTheme()
+
     return (
         <Container>
-            <Toggle />
+            <Toggle
+                labelLeft="Light"
+                labelRight="Dark"
+                checked={theme.title === 'dark'}
+                onChange={toggleTheme}
+            />
 
             <Profile>
                 <Welcome>Olá, {emoji}</Welcome> 

@@ -9,8 +9,12 @@ export const Container = styled.div`
     height: 300px;
     background-color: var(--tertiary);
     color: var(--white);
-    padding: 20px 20px 50px 20px;
+    padding: 20px 20px 45px 20px;
     border-radius: 8px;
+
+    svg {
+        padding: 3px;
+    }
 `
 
 export const Header = styled.div`

@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useParams } from 'react-router-dom'
 
-import { Container, Content, Filters } from './style'
+import { Container, Content, Filters } from './styles'
 import ContentHeader from '../../components/ContentHeader'
 import SelectInput from '../../components/SelectInput'
 import HistoryFinanceCard from '../../components/HistoryFinanceCard'

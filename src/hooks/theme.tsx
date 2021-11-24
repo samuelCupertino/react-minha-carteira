@@ -1,4 +1,4 @@
-import { createContext, useState, useContext} from 'react'
+import { createContext, useContext, useState } from 'react'
 
 import { dark, light }  from '../styles/themes'
 
@@ -26,10 +26,17 @@ interface ITheme {
 
 const ThemeContext = createContext<IThemeContext>({} as IThemeContext)
 
-export const ThemeProvider: React.FC = ({ children }) => {
-    const [theme, setTheme] = useState<ITheme>(dark)
+export const ThemeProvider:React.FC = ({ children }) => {
+    const [theme, setTheme] = useState<ITheme>(()=> {
+        const themeStorage = localStorage.getItem('@minha-carteira:theme')
+        return themeStorage ? JSON.parse(themeStorage) : dark
+    })
 
-    const toggleTheme = () => setTheme(theme.title === 'dark' ? light : dark)
+    const toggleTheme = () => {
+        const newTheme = theme === dark ? light : dark
+        localStorage.setItem('@minha-carteira:theme', JSON.stringify(newTheme))
+        setTheme(newTheme)
+    }
 
     return (
         <ThemeContext.Provider value={{ toggleTheme, theme }}>
@@ -38,4 +45,4 @@ export const ThemeProvider: React.FC = ({ children }) => {
     )
 }
 
-export const useTheme = (): IThemeContext => useContext(ThemeContext)
+export const useTheme = ():IThemeContext => useContext(ThemeContext)

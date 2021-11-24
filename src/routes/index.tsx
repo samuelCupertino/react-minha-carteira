@@ -1,18 +1,18 @@
-import {BrowserRouter, Routes, Route} from 'react-router-dom'
+import { BrowserRouter } from 'react-router-dom'
 
-import Layout from '../components/Layout'
-import Dashboard from '../pages/Dashboard'
-import List from '../pages/List'
+import { useAuth } from '../hooks/auth'
 
-const AppRoutes: React.FC = () => (
-    <BrowserRouter>
-        <Layout>
-            <Routes>
-                <Route path="/Dashboard" element={<Dashboard />} />
-                <Route path="/list/:type" element={<List />} />
-            </Routes>
-        </Layout>
-    </BrowserRouter>
-)
+import AppRoutes from './app.routes'
+import AuthRoutes from './auth.routes'
 
-export default AppRoutes
+const Routes: React.FC = () => {
+    const { isLogged } = useAuth()
+
+    return (
+        <BrowserRouter>
+            {isLogged ? <AppRoutes /> : <AuthRoutes />}
+        </BrowserRouter>
+    )
+}
+
+export default Routes

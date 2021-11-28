@@ -7,7 +7,7 @@ import { Dashboard, List, SignIn} from '../pages'
 const AppRoutes: React.FC = () => (
     <Layout>
         <Routes>
-            <Route path="/Dashboard" element={<Dashboard />} />
+            <Route path="/" element={<Dashboard />} />
             <Route path="/list/:type" element={<List />} />
             <Route path="/signin" element={<SignIn />} />
         </Routes>

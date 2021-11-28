@@ -52,8 +52,8 @@ const Aside:React.FC = () => {
                 <Title>Minha Carteira</Title>
             </Header>
             <MenuContainer>
-                <Link to="/dashboard"> 
-                    <MenuItemLink isActive={pathname === '/dashboard'}>
+                <Link to="/"> 
+                    <MenuItemLink isActive={pathname === '/'}>
                         <MdDashboard size={20} />
                         <span>Dashboard</span>
                     </MenuItemLink> 

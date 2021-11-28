@@ -62,7 +62,7 @@ const Dashboard:React.FC = () => {
 
     const dateDefault = useMemo(() => new Date(
         transactions.reduce((acc, e) => acc < e.date ? e.date : acc, '')
-    ), [])
+    ), [transactions])
 
     const [ monthOptionSelected, setMonthOptionSelected ] = useState<number>(dateDefault.getMonth() + 1)
     const [ yearOptionSelected, setYearOptionSelected ] = useState<number>(dateDefault.getFullYear())

@@ -1,16 +1,36 @@
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 
 interface ILegendProps {
     varColor: string
 }
+
+const animFadeInRight = keyframes`
+    from {
+        opacity: 0;
+        transform: translateX(100px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0px);
+    }
+`
 
 export const Container = styled.div`
     grid-column: span 3;
     background-color: var(--tertiary);
     color: var(--white);
     border-radius: 8px;
-
     display: flex;
+    animation: ${animFadeInRight} 1s;
+
+    @media (max-width: 991px) {
+        flex-direction: column;
+    }
+
+    @media (max-width: 575px) {
+        grid-column: 1 / -1;
+        flex-direction: row;
+    }
 `
 
 export const SideLeft = styled.div`

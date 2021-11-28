@@ -9,6 +9,12 @@ export const Container = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+    @media (max-width: 425px) {
+        flex-direction: column;
+        gap: 20px;
+        align-items: flex-start;
+    }
 `
 
 export const TitleContainer = styled.div<ITitleContainerProps>`

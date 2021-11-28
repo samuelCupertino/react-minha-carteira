@@ -1,8 +1,19 @@
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 
 interface IConatainerProps {
     varColor: string
 }
+
+const animFadeInLeft = keyframes`
+    from {
+        opacity: 0;
+        transform: translateX(-100px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0px);
+    }
+`
 
 export const Container = styled.div<IConatainerProps>`
     grid-column: span 2;
@@ -12,6 +23,7 @@ export const Container = styled.div<IConatainerProps>`
     padding: 20px 10px;
     position: relative;
     overflow: hidden;
+    animation: ${animFadeInLeft} 1s;
 
     > img {
         height: 110%;
@@ -29,6 +41,10 @@ export const Container = styled.div<IConatainerProps>`
     > p {
         font-size: 12px;
         margin-top: 50px;
+    }
+
+    @media (max-width: 575px) {
+        grid-column: 1 / -1;
     }
     
 `

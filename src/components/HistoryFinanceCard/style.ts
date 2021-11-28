@@ -1,8 +1,19 @@
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 
 interface IContainerProps {
     tagVarColor: string
 }
+
+const animFadeInLeft = keyframes`
+    from {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0px);
+    }
+`
 
 export const Container = styled.li<IContainerProps>`
     position: relative;
@@ -15,6 +26,7 @@ export const Container = styled.li<IContainerProps>`
     background-color: var(--tertiary);
     cursor: pointer;
     transition: all .3s;
+    animation: ${animFadeInLeft} .3s;
 
     &:hover {
         opacity: .7;

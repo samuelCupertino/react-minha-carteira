@@ -1,4 +1,16 @@
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
+
+
+const animFadeInRight = keyframes`
+    from {
+        opacity: 0;
+        transform: translateX(100px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0px);
+    }
+`
 
 export const Container = styled.div`
     grid-column: span 3;
@@ -6,6 +18,10 @@ export const Container = styled.div`
     background-color: var(--tertiary);
     border-radius: 8px;
     padding: 30px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    animation: ${animFadeInRight} 1s;
 
     > header {
         display: flex;
@@ -29,5 +45,9 @@ export const Container = styled.div`
         font-size: 12pt;
     }
 
+
+    @media (max-width: 575px) {
+        grid-column: 1 / -1;
+    }
 
 `

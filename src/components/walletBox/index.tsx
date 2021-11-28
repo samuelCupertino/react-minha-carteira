@@ -22,9 +22,9 @@ const WalletBox: React.FC<IWalletBoxProps> = (
         <Container varColor={varColor}>
             <h4>{title}</h4>
             <span>
+                <strong>R$ </strong>
                 <CountUp 
                     end={amount} 
-                    prefix="R$ "
                     separator="." 
                     decimal="," 
                     decimals={2} 

@@ -99,14 +99,21 @@ export const MenuContainer = styled.nav`
     display: flex;
     flex-direction: column;
     gap: 20px;
-`
 
-export const MenuItemLink = styled.span`
-    color: var(--info);
+    > a {
+        text-decoration: none;
+    }
+`
+interface IMenuItemLinkProps {
+    isActive: boolean
+}
+export const MenuItemLink = styled.span<IMenuItemLinkProps>`
+    color: var(${props => props.isActive ? '--warning' : '--info'});
     text-decoration: none;
     display: flex;
     align-items: center;
     gap: 10px;
+    
 
     &:hover {
         opacity: 0.7;

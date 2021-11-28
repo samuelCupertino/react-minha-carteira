@@ -4,7 +4,7 @@ import styled, { keyframes } from 'styled-components'
 const animFadeInRight = keyframes`
     from {
         opacity: 0;
-        transform: translateX(100px);
+        transform: translateX(50px);
     }
     to {
         opacity: 1;

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
 import { 
     Container, 
@@ -36,6 +36,7 @@ const Aside:React.FC = () => {
     const [ toggleMenuIsOpen, setToggleMenuIsOpen ] = useState(false)
     const { signOut } = useAuth()
     const { theme, toggleTheme } = useTheme()
+    const { pathname } = useLocation()
 
     return (
         <Container isOpen={toggleMenuIsOpen}>
@@ -52,21 +53,21 @@ const Aside:React.FC = () => {
             </Header>
             <MenuContainer>
                 <Link to="/dashboard"> 
-                    <MenuItemLink>
+                    <MenuItemLink isActive={pathname === '/dashboard'}>
                         <MdDashboard size={20} />
                         <span>Dashboard</span>
                     </MenuItemLink> 
                 </Link>
 
                 <Link to="/list/entry-balance"> 
-                    <MenuItemLink >
+                    <MenuItemLink isActive={pathname === '/list/entry-balance'}>
                         <MdArrowDownward size={20} />
                         <span>Entradas</span>
                     </MenuItemLink>
                 </Link>
 
                 <Link to="/list/exit-balance"> 
-                    <MenuItemLink>
+                    <MenuItemLink isActive={pathname === '/list/exit-balance'}>
                         <MdArrowUpward size={20} />
                         <span>Saídas</span>
                     </MenuItemLink>

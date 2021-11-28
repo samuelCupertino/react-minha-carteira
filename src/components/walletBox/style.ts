@@ -7,7 +7,7 @@ interface IConatainerProps {
 const animFadeInLeft = keyframes`
     from {
         opacity: 0;
-        transform: translateX(-100px);
+        transform: translateX(-50px);
     }
     to {
         opacity: 1;

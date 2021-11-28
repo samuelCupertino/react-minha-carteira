@@ -101,7 +101,7 @@ export const MenuContainer = styled.nav`
     gap: 20px;
 `
 
-export const MenuItemLink = styled.a`
+export const MenuItemLink = styled.span`
     color: var(--info);
     text-decoration: none;
     display: flex;

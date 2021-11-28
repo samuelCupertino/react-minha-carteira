@@ -1,5 +1,7 @@
 import { useState } from 'react'
 
+import { Link } from 'react-router-dom'
+
 import { 
     Container, 
     Header, 
@@ -49,22 +51,33 @@ const Aside:React.FC = () => {
                 <Title>Minha Carteira</Title>
             </Header>
             <MenuContainer>
-                <MenuItemLink href="/dashboard">
-                    <MdDashboard size={20} />
-                    Dashboard
-                </MenuItemLink>
-                <MenuItemLink href="/list/entry-balance">
-                    <MdArrowDownward size={20} />
-                    Entradas
-                </MenuItemLink>
-                <MenuItemLink href="/list/exit-balance">
-                    <MdArrowUpward size={20} />
-                    Saídas
-                </MenuItemLink>
-                <MenuItemButton onClick={signOut}>
-                    <MdExitToApp size={20} />
-                    <span>Sair</span>
-                </MenuItemButton>
+                <Link to="/dashboard"> 
+                    <MenuItemLink>
+                        <MdDashboard size={20} />
+                        <span>Dashboard</span>
+                    </MenuItemLink> 
+                </Link>
+
+                <Link to="/list/entry-balance"> 
+                    <MenuItemLink >
+                        <MdArrowDownward size={20} />
+                        <span>Entradas</span>
+                    </MenuItemLink>
+                </Link>
+
+                <Link to="/list/exit-balance"> 
+                    <MenuItemLink>
+                        <MdArrowUpward size={20} />
+                        <span>Saídas</span>
+                    </MenuItemLink>
+                </Link>
+
+                <Link to="/"> 
+                    <MenuItemButton onClick={signOut}>
+                        <MdExitToApp size={20} />
+                        <span>Sair</span>
+                    </MenuItemButton>
+                </Link>
             </MenuContainer>
 
             <Footer>
